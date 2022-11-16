@@ -1,6 +1,6 @@
 # django-template
 
-This template counts with:
+This template has:
 - Docker
 - Django custom settings for:
   - Postgres database
