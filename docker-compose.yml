@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:13.2
+    container_name: inove_database
+    restart: always
+
+    volumes:
+      - ./database:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+
+    ports:
+      - 5432:5432
+  
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile  
+
+    image: django_app 
+    container_name: app
+
+    restart: always
+    
+    volumes:
+      - type: bind
+        source: .
+        target: /opt
+
+    ports:
+        - "8000:8000"
+
+    stdin_open: true
+    tty: true
+    depends_on: ["db"]
+    command: python /opt/backend/manage.py runserver 0.0.0.0:8000
